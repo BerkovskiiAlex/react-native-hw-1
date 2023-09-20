@@ -15,7 +15,14 @@ import addPhoto from "../assets/images/addPhoto.jpg";
 export const RegistrationScreen = () => {
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [keyboardVisible, setKeyboardVisible] = useState(false);
-  const handleSubmit = () => {};
+
+  const [login, setLogin] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleSubmit = () => {
+    console.log("Вход:", login, email, password);
+  };
 
   const keyboardDidShow = () => setKeyboardVisible(true);
   const keyboardDidHide = () => setKeyboardVisible(false);
@@ -42,12 +49,19 @@ export const RegistrationScreen = () => {
       <Text style={styles.registrationScreenText}>Реєстрація</Text>
       <View style={styles.inputsContainer}>
         <View style={styles.textInputWrapper}>
-          <TextInput style={styles.textInput} placeholder="Логін" />
+          <TextInput
+            style={styles.textInput}
+            placeholder="Логін"
+            value={login}
+            onChangeText={setLogin}
+          />
         </View>
         <View style={styles.textInputWrapper}>
           <TextInput
             style={styles.textInput}
             placeholder="Адреса електронної пошти"
+            value={email}
+            onChangeText={setEmail}
           />
         </View>
         <View style={styles.passwordContainer}>
@@ -63,6 +77,8 @@ export const RegistrationScreen = () => {
             style={styles.textInput}
             placeholder="Пароль"
             secureTextEntry={!passwordVisible}
+            value={password}
+            onChangeText={setPassword}
           />
         </View>
       </View>

@@ -13,6 +13,8 @@ import {
 export const LoginScreen = () => {
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [keyboardVisible, setKeyboardVisible] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   const keyboardDidShow = () => setKeyboardVisible(true);
   const keyboardDidHide = () => setKeyboardVisible(false);
@@ -34,7 +36,7 @@ export const LoginScreen = () => {
   }, []);
 
   const handleSubmit = () => {
-    console.log("Вход:", login, password);
+    console.log("Вход:", email, password);
   };
 
   return (
@@ -45,6 +47,8 @@ export const LoginScreen = () => {
           <TextInput
             style={styles.textInput}
             placeholder="Адреса електронної пошти"
+            value={email}
+            onChangeText={setEmail}
           />
         </View>
         <View style={styles.passwordContainer}>
@@ -60,6 +64,8 @@ export const LoginScreen = () => {
             style={styles.textInput}
             placeholder="Пароль"
             secureTextEntry={!passwordVisible}
+            value={password}
+            onChangeText={setPassword}
           />
         </View>
       </View>
