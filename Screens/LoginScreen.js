@@ -8,14 +8,11 @@ import {
   TextInput,
   TouchableOpacity,
   Keyboard,
-  Image,
 } from "react-native";
-import addPhoto from "../assets/images/addPhoto.jpg";
 
-export const RegistrationScreen = () => {
+export const LoginScreen = () => {
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [keyboardVisible, setKeyboardVisible] = useState(false);
-  const handleSubmit = () => {};
 
   const keyboardDidShow = () => setKeyboardVisible(true);
   const keyboardDidHide = () => setKeyboardVisible(false);
@@ -36,14 +33,14 @@ export const RegistrationScreen = () => {
     };
   }, []);
 
+  const handleSubmit = () => {
+    console.log("Вход:", login, password);
+  };
+
   return (
-    <View style={styles.registrationScreenContainer}>
-      <Image source={addPhoto} style={styles.image} />
-      <Text style={styles.registrationScreenText}>Реєстрація</Text>
+    <View style={styles.loginScreenContainer}>
+      <Text style={styles.loginScreenText}>Увійти</Text>
       <View style={styles.inputsContainer}>
-        <View style={styles.textInputWrapper}>
-          <TextInput style={styles.textInput} placeholder="Логін" />
-        </View>
         <View style={styles.textInputWrapper}>
           <TextInput
             style={styles.textInput}
@@ -68,18 +65,18 @@ export const RegistrationScreen = () => {
       </View>
       {!keyboardVisible && (
         <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
-          <Text style={styles.submitButtonText}>Зареєструватися</Text>
+          <Text style={styles.submitButtonText}>Увійти</Text>
         </TouchableOpacity>
       )}
       {!keyboardVisible && (
-        <Text style={styles.loginText}>Вже є акаунт? Увійти</Text>
+        <Text style={styles.loginText}>Немає акаунту? Зареєструватися</Text>
       )}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  registrationScreenContainer: {
+  loginScreenContainer: {
     borderTopRightRadius: 25,
     borderTopLeftRadius: 25,
     backgroundColor: "#fff",
@@ -88,7 +85,6 @@ const styles = StyleSheet.create({
     width: "100%",
     position: "absolute",
     bottom: 0,
-    paddingBottom: 46,
   },
   image: {
     position: "absolute",
@@ -97,12 +93,12 @@ const styles = StyleSheet.create({
     height: 120,
     borderRadius: 15,
   },
-  registrationScreenText: {
+  loginScreenText: {
     fontFamily: "Roboto-Medium",
     color: "#212121",
     fontSize: 30,
     letterSpacing: 0.3,
-    marginTop: 92,
+    marginTop: 32,
     lineHeight: 35,
   },
   inputsContainer: {
@@ -135,6 +131,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#E8E8E8",
     borderRadius: 10,
+    marginBottom: 32,
   },
   showPasswordButton: {
     position: "absolute",
@@ -148,7 +145,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   submitButton: {
-    marginTop: 42,
+    marginTop: 14,
     width: 343,
     paddingVertical: 16,
     paddingHorizontal: 32,
@@ -168,5 +165,6 @@ const styles = StyleSheet.create({
     fontFamily: "Roboto-Regular",
     fontSize: 16,
     marginTop: 16,
+    marginBottom: 112,
   },
 });
