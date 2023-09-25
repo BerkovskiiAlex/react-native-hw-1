@@ -8,9 +8,15 @@ import {
   TextInput,
   TouchableOpacity,
   Keyboard,
+  Button,
+  TouchableWithoutFeedback,
+  ImageBackground,
 } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import PhotoBG from "../assets/images/PhotoBG.jpg";
 
 export const LoginScreen = () => {
+  const navigation = useNavigation();
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [keyboardVisible, setKeyboardVisible] = useState(false);
   const [email, setEmail] = useState("");
@@ -40,48 +46,77 @@ export const LoginScreen = () => {
   };
 
   return (
-    <View style={styles.loginScreenContainer}>
-      <Text style={styles.loginScreenText}>Увійти</Text>
-      <View style={styles.inputsContainer}>
-        <View style={styles.textInputWrapper}>
-          <TextInput
-            style={styles.textInput}
-            placeholder="Адреса електронної пошти"
-            value={email}
-            onChangeText={setEmail}
-          />
-        </View>
-        <View style={styles.passwordContainer}>
-          <TouchableOpacity
-            onPress={() => setPasswordVisible(!passwordVisible)}
-            style={styles.showPasswordButton}
-          >
-            <Text style={styles.showPasswordText}>
-              {passwordVisible ? "Приховати" : "Показати"}
-            </Text>
-          </TouchableOpacity>
-          <TextInput
-            style={styles.textInput}
-            placeholder="Пароль"
-            secureTextEntry={!passwordVisible}
-            value={password}
-            onChangeText={setPassword}
-          />
-        </View>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <View style={styles.container}>
+        <ImageBackground source={PhotoBG} style={styles.imageBackground}>
+          <View style={styles.loginScreenContainer}>
+            <Text style={styles.loginScreenText}>Увійти</Text>
+            <View style={styles.inputsContainer}>
+              <View style={styles.textInputWrapper}>
+                <TextInput
+                  style={styles.textInput}
+                  placeholder="Адреса електронної пошти"
+                  value={email}
+                  onChangeText={setEmail}
+                />
+              </View>
+              <View style={styles.passwordContainer}>
+                <TouchableOpacity
+                  onPress={() => setPasswordVisible(!passwordVisible)}
+                  style={styles.showPasswordButton}
+                >
+                  <Text style={styles.showPasswordText}>
+                    {passwordVisible ? "Приховати" : "Показати"}
+                  </Text>
+                </TouchableOpacity>
+                <TextInput
+                  style={styles.textInput}
+                  placeholder="Пароль"
+                  secureTextEntry={!passwordVisible}
+                  value={password}
+                  onChangeText={setPassword}
+                />
+              </View>
+            </View>
+            {!keyboardVisible && (
+              <TouchableOpacity
+                style={styles.submitButton}
+                onPress={handleSubmit}
+              >
+                <Text style={styles.submitButtonText}>Увійти</Text>
+              </TouchableOpacity>
+            )}
+            {!keyboardVisible && (
+              <TouchableOpacity>
+                <Text
+                  style={styles.loginText}
+                  onPress={() => navigation.navigate("Registration")}
+                >
+                  Немає акаунту? Зареєструватися
+                </Text>
+              </TouchableOpacity>
+            )}
+          </View>
+        </ImageBackground>
       </View>
-      {!keyboardVisible && (
-        <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
-          <Text style={styles.submitButtonText}>Увійти</Text>
-        </TouchableOpacity>
-      )}
-      {!keyboardVisible && (
-        <Text style={styles.loginText}>Немає акаунту? Зареєструватися</Text>
-      )}
-    </View>
+    </TouchableWithoutFeedback>
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  imageBackground: {
+    flex: 1,
+    width: "100%",
+    height: "100%",
+    alignItems: "center",
+    justifyContent: "center",
+  },
   loginScreenContainer: {
     borderTopRightRadius: 25,
     borderTopLeftRadius: 25,

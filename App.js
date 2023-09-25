@@ -1,19 +1,16 @@
 /** @format */
 
+import "react-native-gesture-handler";
 import { StatusBar } from "expo-status-bar";
-import {
-  ImageBackground,
-  StyleSheet,
-  Text,
-  View,
-  Keyboard,
-  TouchableWithoutFeedback,
-} from "react-native";
+import { useFonts } from "expo-font";
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
+
 import { RegistrationScreen } from "./Screens/RegistrationScreen";
 import { LoginScreen } from "./Screens/LoginScreen";
 import { PostsScreen } from "./Screens/PostsScreen";
-import PhotoBG from "./assets/images/PhotoBG.jpg";
-import { useFonts } from "expo-font";
+
+const MainStack = createStackNavigator();
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -27,31 +24,21 @@ export default function App() {
   }
 
   return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <View style={styles.container}>
-        <ImageBackground source={PhotoBG} style={styles.imageBackground}>
-          <StatusBar style="auto" />
-          {/* <RegistrationScreen /> */}
-          <LoginScreen />
-          {/* <PostsScreen /> */}
-        </ImageBackground>
-      </View>
-    </TouchableWithoutFeedback>
+    <NavigationContainer>
+      <StatusBar style="auto" />
+      <MainStack.Navigator initialRouteName="Login">
+        <MainStack.Screen
+          name="Registration"
+          component={RegistrationScreen}
+          options={{ headerShown: false }}
+        />
+        <MainStack.Screen
+          name="Login"
+          component={LoginScreen}
+          options={{ headerShown: false }}
+        />
+        <MainStack.Screen name="Posts" component={PostsScreen} />
+      </MainStack.Navigator>
+    </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  imageBackground: {
-    flex: 1,
-    width: "100%",
-    height: "100%",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});
