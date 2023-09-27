@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "react-native-hw-1",
-    "slug": "react-native-hw-1",
+    "slug": "react-native-homework",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -11,9 +11,7 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true
     },
@@ -21,10 +19,20 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
+      },
+      "package": "com.alexultra.reactnativehomework",
+      "config": {
+        "googleMaps": { "apiKey": "AIzaSyBwmsqzX3RINZ3eDzGcy_Gx6vUFFuhsfkU" }
       }
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "65b1f2aa-e2f5-46e8-908d-8b8108078bd6"
+      }
+    },
+    "owner": "alexultra"
   }
 }

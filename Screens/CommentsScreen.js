@@ -3,16 +3,16 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 
-export const PostsScreen = () => {
+export const CommentsScreen = () => {
   return (
-    <View style={styles.postsScreenContainer}>
-      <Text>Posts</Text>
+    <View style={styles.commentsScreenContainer}>
+      <Text>Comments</Text>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  postsScreenContainer: {
+  commentsScreenContainer: {
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
@@ -20,7 +20,5 @@ const styles = StyleSheet.create({
     height: "100%",
     position: "absolute",
     bottom: 0,
-    borderColor: "rgba(0, 0, 0, 0.30)",
-    borderTopWidth: 0.5,
   },
 });

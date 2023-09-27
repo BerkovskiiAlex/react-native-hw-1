@@ -3,16 +3,16 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 
-export const PostsScreen = () => {
+export const CreatePostsScreen = () => {
   return (
-    <View style={styles.postsScreenContainer}>
-      <Text>Posts</Text>
+    <View style={styles.createPostsScreenContainer}>
+      <Text>Create Posts</Text>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  postsScreenContainer: {
+  createPostsScreenContainer: {
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",

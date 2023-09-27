@@ -9,7 +9,6 @@ import {
   TouchableOpacity,
   Keyboard,
   Image,
-  Button,
   TouchableWithoutFeedback,
   ImageBackground,
 } from "react-native";
@@ -28,6 +27,10 @@ export const RegistrationScreen = () => {
 
   const handleSubmit = () => {
     console.log("Вход:", login, email, password);
+    navigation.navigate("Home");
+    setLogin("");
+    setEmail("");
+    setPassword("");
   };
 
   const keyboardDidShow = () => setKeyboardVisible(true);

@@ -8,7 +8,6 @@ import {
   TextInput,
   TouchableOpacity,
   Keyboard,
-  Button,
   TouchableWithoutFeedback,
   ImageBackground,
 } from "react-native";
@@ -43,6 +42,9 @@ export const LoginScreen = () => {
 
   const handleSubmit = () => {
     console.log("Вход:", email, password);
+    navigation.navigate("Home");
+    setEmail("");
+    setPassword("");
   };
 
   return (
