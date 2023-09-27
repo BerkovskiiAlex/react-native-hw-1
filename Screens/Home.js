@@ -20,7 +20,7 @@ export const Home = () => {
 
   return (
     <Tabs.Navigator
-      initialRouteName="Публікації"
+      initialRouteName="Створити публікацію"
       screenOptions={({ route }) => ({
         tabBarIcon: ({ focused, color, size }) => {
           let iconName;
