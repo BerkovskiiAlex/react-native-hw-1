@@ -5,10 +5,14 @@ import { StatusBar } from "expo-status-bar";
 import { useFonts } from "expo-font";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
+import { PersistGate } from "redux-persist/integration/react";
+import { Provider } from "react-redux";
 
 import { RegistrationScreen } from "./Screens/RegistrationScreen";
 import { LoginScreen } from "./Screens/LoginScreen";
 import { Home } from "./Screens/Home";
+import store from "./src/Redux/Store";
+import { Text } from "react-native";
 
 const MainStack = createStackNavigator();
 
@@ -24,25 +28,32 @@ export default function App() {
   }
 
   return (
-    <NavigationContainer>
-      <StatusBar style="auto" />
-      <MainStack.Navigator initialRouteName="Login">
-        <MainStack.Screen
-          name="Registration"
-          component={RegistrationScreen}
-          options={{ headerShown: false }}
-        />
-        <MainStack.Screen
-          name="Login"
-          component={LoginScreen}
-          options={{ headerShown: false }}
-        />
-        <MainStack.Screen
-          name="Home"
-          component={Home}
-          options={{ headerShown: false }}
-        />
-      </MainStack.Navigator>
-    </NavigationContainer>
+    <Provider store={store.store}>
+      <PersistGate
+        loading={<Text>Loading...</Text>}
+        persistor={store.persistor}
+      >
+        <NavigationContainer>
+          <StatusBar style="auto" />
+          <MainStack.Navigator initialRouteName="Registration">
+            <MainStack.Screen
+              name="Registration"
+              component={RegistrationScreen}
+              options={{ headerShown: false }}
+            />
+            <MainStack.Screen
+              name="Login"
+              component={LoginScreen}
+              options={{ headerShown: false }}
+            />
+            <MainStack.Screen
+              name="Home"
+              component={Home}
+              options={{ headerShown: false }}
+            />
+          </MainStack.Navigator>
+        </NavigationContainer>
+      </PersistGate>
+    </Provider>
   );
 }

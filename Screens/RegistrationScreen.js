@@ -12,9 +12,11 @@ import {
   TouchableWithoutFeedback,
   ImageBackground,
 } from "react-native";
+import { useDispatch } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
 import addPhoto from "../assets/images/addPhoto.jpg";
 import PhotoBG from "../assets/images/PhotoBG.jpg";
+import { registerUserThunk } from "../src/Redux/Auth/operations";
 
 export const RegistrationScreen = () => {
   const navigation = useNavigation();
@@ -25,9 +27,12 @@ export const RegistrationScreen = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const dispatch = useDispatch();
+
   const handleSubmit = () => {
     console.log("Вход:", login, email, password);
-    navigation.navigate("Home");
+    // navigation.navigate("Home");
+    dispatch(registerUserThunk({ email: email, password: password }));
     setLogin("");
     setEmail("");
     setPassword("");
