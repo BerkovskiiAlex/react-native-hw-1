@@ -4,17 +4,12 @@ import "react-native-gesture-handler";
 import { StatusBar } from "expo-status-bar";
 import { useFonts } from "expo-font";
 import { NavigationContainer } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
 import { PersistGate } from "redux-persist/integration/react";
-import { Provider } from "react-redux";
-
-import { RegistrationScreen } from "./Screens/RegistrationScreen";
-import { LoginScreen } from "./Screens/LoginScreen";
-import { Home } from "./Screens/Home";
-import store from "./src/Redux/Store";
+import { Provider, useSelector } from "react-redux";
 import { Text } from "react-native";
 
-const MainStack = createStackNavigator();
+import store from "./src/Redux/Store";
+import { MainStackNavigator } from "./MainStackNavigator";
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -35,23 +30,7 @@ export default function App() {
       >
         <NavigationContainer>
           <StatusBar style="auto" />
-          <MainStack.Navigator initialRouteName="Registration">
-            <MainStack.Screen
-              name="Registration"
-              component={RegistrationScreen}
-              options={{ headerShown: false }}
-            />
-            <MainStack.Screen
-              name="Login"
-              component={LoginScreen}
-              options={{ headerShown: false }}
-            />
-            <MainStack.Screen
-              name="Home"
-              component={Home}
-              options={{ headerShown: false }}
-            />
-          </MainStack.Navigator>
+          <MainStackNavigator />
         </NavigationContainer>
       </PersistGate>
     </Provider>

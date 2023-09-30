@@ -24,6 +24,7 @@ export const CreatePostsScreen = () => {
   const [type, setType] = useState(Camera.Constants.Type.back);
   const [photoTitle, setPhotoTitle] = useState("");
   const [location, setLocation] = useState("");
+  const [isMapReady, setMapReady] = useState(false);
   const navigation = useNavigation();
 
   useFocusEffect(
@@ -135,13 +136,18 @@ export const CreatePostsScreen = () => {
         showsUserLocation={true}
         mapType="standard"
         minZoomLevel={15}
-        onMapReady={() => console.log("Map is ready")}
+        onMapReady={() => {
+          console.log("Map is ready");
+          setMapReady(true);
+        }}
         onRegionChange={() => console.log("Region change")}
         onPress={(e) => {
           setLocation(e.nativeEvent.coordinate);
         }}
       >
-        <Marker title="I am here" coordinate={location} description="Hello" />
+        {location && isMapReady && (
+          <Marker title="I am here" coordinate={location} description="Hello" />
+        )}
       </MapView>
       <TouchableOpacity onPress={handleCreatePost} style={styles.publishButton}>
         <Text style={styles.publishButtonText}>Опублікувати</Text>

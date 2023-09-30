@@ -12,11 +12,12 @@ import {
   TouchableWithoutFeedback,
   ImageBackground,
 } from "react-native";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
 import addPhoto from "../assets/images/addPhoto.jpg";
 import PhotoBG from "../assets/images/PhotoBG.jpg";
 import { registerUserThunk } from "../src/Redux/Auth/operations";
+import { getLoggedIn } from "../src/Redux/Auth/selectors";
 
 export const RegistrationScreen = () => {
   const navigation = useNavigation();
@@ -29,9 +30,45 @@ export const RegistrationScreen = () => {
 
   const dispatch = useDispatch();
 
+  const isLoggedIn = useSelector(getLoggedIn);
+
+  const emailValidator = (email) => {
+    const re =
+      /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    if (!re.test(email.toLowerCase())) {
+      alert("Please input a valid email address.");
+      return false;
+    }
+    return true;
+  };
+
+  const passwordValidator = (password) => {
+    if (password.length < 6) {
+      alert("Password should be at least 6 characters long.");
+      return false;
+    }
+    return true;
+  };
+
+  const loginValidator = (login) => {
+    if (login.length < 3) {
+      alert("Login should be at least 3 characters long.");
+      return false;
+    }
+    return true;
+  };
+
   const handleSubmit = () => {
+    console.log(isLoggedIn);
+    if (
+      !emailValidator(email) ||
+      !passwordValidator(password) ||
+      !loginValidator(login)
+    ) {
+      return;
+    }
     console.log("Вход:", login, email, password);
-    // navigation.navigate("Home");
+    navigation.navigate("Home");
     dispatch(registerUserThunk({ email: email, password: password }));
     setLogin("");
     setEmail("");
@@ -42,6 +79,7 @@ export const RegistrationScreen = () => {
   const keyboardDidHide = () => setKeyboardVisible(false);
 
   useEffect(() => {
+    console.log(isLoggedIn);
     const keyboardDidShowSubscription = Keyboard.addListener(
       "keyboardDidShow",
       keyboardDidShow
