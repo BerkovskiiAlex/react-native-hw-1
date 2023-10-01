@@ -17,6 +17,10 @@ import { useNavigation } from "@react-navigation/native";
 import { useFocusEffect } from "@react-navigation/native";
 import * as Location from "expo-location";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import { useDispatch } from "react-redux";
+import { storage } from "../src/Redux/Firebase/config";
+import { addPostThunk } from "../src/Redux/Auth/operations";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
 export const CreatePostsScreen = () => {
   const [hasPermission, setHasPermission] = useState(null);
@@ -26,6 +30,9 @@ export const CreatePostsScreen = () => {
   const [location, setLocation] = useState("");
   const [isMapReady, setMapReady] = useState(false);
   const navigation = useNavigation();
+  const [photoUri, setPhotoUri] = useState(null);
+  const dispatch = useDispatch();
+  const isFormValid = photoTitle && location && photoUri;
 
   useFocusEffect(
     useCallback(() => {
@@ -74,9 +81,22 @@ export const CreatePostsScreen = () => {
     return <Text>Немає доступу до камери</Text>;
   }
 
-  const handleCreatePost = () => {
-    console.log({ location, photoTitle });
-    navigation.navigate("Публікації");
+  const handleCreatePost = async () => {
+    console.log(storage);
+
+    const storageRef = ref(storage, "photos/" + photoUri.split("/").pop());
+
+    try {
+      let response = await fetch(photoUri);
+      let blob = await response.blob();
+      await uploadBytes(storageRef, blob);
+      const photoUrl = await getDownloadURL(storageRef);
+
+      dispatch(addPostThunk({ photoTitle, photoUrl, location, comments: [] }));
+      navigation.navigate("Публікації");
+    } catch (error) {
+      console.error("Ошибка загрузки фотографии:", error);
+    }
   };
 
   return (
@@ -107,6 +127,7 @@ export const CreatePostsScreen = () => {
                 if (cameraRef.current) {
                   const { uri } = await cameraRef.current.takePictureAsync();
                   await MediaLibrary.createAssetAsync(uri);
+                  setPhotoUri(uri);
                 }
               }}
             >
@@ -149,7 +170,14 @@ export const CreatePostsScreen = () => {
           <Marker title="I am here" coordinate={location} description="Hello" />
         )}
       </MapView>
-      <TouchableOpacity onPress={handleCreatePost} style={styles.publishButton}>
+      <TouchableOpacity
+        onPress={handleCreatePost}
+        style={[
+          styles.publishButton,
+          !isFormValid && { backgroundColor: "lightgray" },
+        ]}
+        disabled={!isFormValid}
+      >
         <Text style={styles.publishButtonText}>Опублікувати</Text>
       </TouchableOpacity>
     </ScrollView>

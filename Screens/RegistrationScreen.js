@@ -66,8 +66,9 @@ export const RegistrationScreen = () => {
       return;
     }
     console.log("Вход:", login, email, password);
-    navigation.navigate("Home");
-    dispatch(registerUserThunk({ email: email, password: password }));
+    dispatch(
+      registerUserThunk({ username: login, email: email, password: password })
+    );
     setLogin("");
     setEmail("");
     setPassword("");

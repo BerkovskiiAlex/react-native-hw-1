@@ -22,6 +22,11 @@ export const Home = () => {
     navigation.navigate("Login");
   };
 
+  const onPressBtn = (e) => {
+    e.preventDefault();
+    navigation.navigate("CreatePostsScreen");
+  };
+
   return (
     <Tabs.Navigator
       initialRouteName="Публікації"
@@ -82,7 +87,8 @@ export const Home = () => {
       />
       <Tabs.Screen
         name="Створити публікацію"
-        component={CreatePostsScreen}
+        component={View}
+        listeners={() => ({ tabPress: (e) => onPressBtn(e) })}
         options={{
           headerTitle: () => (
             <View style={styles.header}>
