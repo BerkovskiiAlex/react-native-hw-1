@@ -1,6 +1,9 @@
 /** @format */
 
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import {
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+} from "firebase/auth";
 import { auth } from "../Firebase/config";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
@@ -13,8 +16,24 @@ export const registerUserThunk = createAsyncThunk(
         email,
         password
       );
-      console.log(credentials);
       return credentials.user.email;
+    } catch (error) {
+      console.log(error);
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const loginThunk = createAsyncThunk(
+  "auth/login",
+  async ({ email, password }, { rejectWithValue }) => {
+    try {
+      const credentials = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      return credentials.user;
     } catch (error) {
       console.log(error);
       return rejectWithValue(error.message);

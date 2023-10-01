@@ -13,6 +13,9 @@ import {
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import PhotoBG from "../assets/images/PhotoBG.jpg";
+import { useDispatch, useSelector } from "react-redux";
+import { loginThunk } from "../src/Redux/Auth/operations";
+import { getLoggedIn } from "../src/Redux/Auth/selectors";
 
 export const LoginScreen = () => {
   const navigation = useNavigation();
@@ -20,9 +23,12 @@ export const LoginScreen = () => {
   const [keyboardVisible, setKeyboardVisible] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const isLoggedIn = useSelector(getLoggedIn);
 
   const keyboardDidShow = () => setKeyboardVisible(true);
   const keyboardDidHide = () => setKeyboardVisible(false);
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const keyboardDidShowSubscription = Keyboard.addListener(
@@ -40,12 +46,40 @@ export const LoginScreen = () => {
     };
   }, []);
 
+  const emailValidator = (email) => {
+    const re =
+      /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    if (!re.test(email.toLowerCase())) {
+      alert("Please input a valid email address.");
+      return false;
+    }
+    return true;
+  };
+
+  const passwordValidator = (password) => {
+    if (password.length < 6) {
+      alert("Password should be at least 6 characters long.");
+      return false;
+    }
+    return true;
+  };
+
   const handleSubmit = () => {
+    console.log(isLoggedIn);
+    if (!emailValidator(email) || !passwordValidator(password)) {
+      return;
+    }
     console.log("Вход:", email, password);
-    navigation.navigate("Home");
+    dispatch(loginThunk({ email: email, password: password }));
     setEmail("");
     setPassword("");
   };
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      navigation.navigate("Home");
+    }
+  }, [isLoggedIn]);
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>

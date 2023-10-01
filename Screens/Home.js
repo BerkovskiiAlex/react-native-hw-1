@@ -7,20 +7,24 @@ import { View, Text, StyleSheet } from "react-native";
 import { PostsScreen } from "./PostsScreen";
 import { ProfileScreen } from "./ProfileScreen";
 import { CreatePostsScreen } from "./CreatePostsScreen";
+import { logout } from "../src/Redux/Auth/AuthSlice";
 
 const Tabs = createBottomTabNavigator();
 import { useNavigation } from "@react-navigation/native";
+import { useDispatch } from "react-redux";
 
 export const Home = () => {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
 
   const handleLogout = () => {
+    dispatch(logout());
     navigation.navigate("Login");
   };
 
   return (
     <Tabs.Navigator
-      initialRouteName="Створити публікацію"
+      initialRouteName="Публікації"
       screenOptions={({ route }) => ({
         tabBarIcon: ({ focused, color, size }) => {
           let iconName;

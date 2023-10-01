@@ -27,10 +27,9 @@ export const RegistrationScreen = () => {
   const [login, setLogin] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const isLoggedIn = useSelector(getLoggedIn);
 
   const dispatch = useDispatch();
-
-  const isLoggedIn = useSelector(getLoggedIn);
 
   const emailValidator = (email) => {
     const re =
@@ -59,7 +58,6 @@ export const RegistrationScreen = () => {
   };
 
   const handleSubmit = () => {
-    console.log(isLoggedIn);
     if (
       !emailValidator(email) ||
       !passwordValidator(password) ||
@@ -79,7 +77,6 @@ export const RegistrationScreen = () => {
   const keyboardDidHide = () => setKeyboardVisible(false);
 
   useEffect(() => {
-    console.log(isLoggedIn);
     const keyboardDidShowSubscription = Keyboard.addListener(
       "keyboardDidShow",
       keyboardDidShow
@@ -94,6 +91,12 @@ export const RegistrationScreen = () => {
       keyboardDidHideSubscription.remove();
     };
   }, []);
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      navigation.navigate("Home");
+    }
+  }, [isLoggedIn]);
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
