@@ -6,7 +6,6 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import { View, Text, StyleSheet } from "react-native";
 import { PostsScreen } from "./PostsScreen";
 import { ProfileScreen } from "./ProfileScreen";
-import { CreatePostsScreen } from "./CreatePostsScreen";
 import { logout } from "../src/Redux/Auth/AuthSlice";
 
 const Tabs = createBottomTabNavigator();
@@ -24,7 +23,7 @@ export const Home = () => {
 
   const onPressBtn = (e) => {
     e.preventDefault();
-    navigation.navigate("CreatePostsScreen");
+    navigation.navigate("Створити публікацію");
   };
 
   return (

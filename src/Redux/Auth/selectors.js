@@ -19,3 +19,7 @@ export const getPostsUpdate = (state) => {
 export const getCurrentUser = (state) => {
   return state.currentUser;
 };
+
+export const getSinglePost = (state) => {
+  return state.singlePost;
+};

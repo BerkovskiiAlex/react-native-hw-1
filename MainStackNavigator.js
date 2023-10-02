@@ -8,6 +8,7 @@ import { LoginScreen } from "./Screens/LoginScreen";
 import { Home } from "./Screens/Home";
 import { useSelector } from "react-redux";
 import { CreatePostsScreen } from "./Screens/CreatePostsScreen";
+import { SinglePostScreen } from "./Screens/SinglePostScreen";
 
 const MainStack = createStackNavigator();
 
@@ -32,8 +33,13 @@ export const MainStackNavigator = () => {
         options={{ headerShown: false }}
       />
       <MainStack.Screen
-        name="CreatePostsScreen"
+        name="Створити публікацію"
         component={CreatePostsScreen}
+        options={{ headerShown: true }}
+      />
+      <MainStack.Screen
+        name="Коментарі"
+        component={SinglePostScreen}
         options={{ headerShown: true }}
       />
     </MainStack.Navigator>

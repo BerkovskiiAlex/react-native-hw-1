@@ -14,6 +14,7 @@ import {
   updateDoc,
   arrayUnion,
   doc,
+  getDoc,
 } from "firebase/firestore";
 import { db } from "../Firebase/config";
 
@@ -96,13 +97,26 @@ export const addCommentThunk = createAsyncThunk(
   "posts/addComment",
   async ({ commentText, uid, createdAt, postId }, { rejectWithValue }) => {
     const comment = { commentText, uid, createdAt };
-    console.log(postId);
-    try {
+        try {
       const addedComment = await updateDoc(doc(db, "posts", postId), {
         comments: arrayUnion({ ...comment }),
       });
 
       return addedComment;
+    } catch (error) {
+      console.log(error);
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const getSinglePostThunk = createAsyncThunk(
+  "posts/getSinglePost",
+  async (postId, { rejectWithValue }) => {
+    try {
+      const docRef = doc(db, "posts", postId);
+      const postSnapshot = await getDoc(docRef);
+      return postSnapshot.data();
     } catch (error) {
       console.log(error);
       return rejectWithValue(error.message);

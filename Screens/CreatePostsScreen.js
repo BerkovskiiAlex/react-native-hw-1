@@ -82,7 +82,7 @@ export const CreatePostsScreen = () => {
   }
 
   const handleCreatePost = async () => {
-    console.log(storage);
+    
 
     const storageRef = ref(storage, "photos/" + photoUri.split("/").pop());
 

@@ -7,6 +7,7 @@ import {
   addPostThunk,
   getDataFromFirestoreThunk,
   addCommentThunk,
+  getSinglePostThunk,
 } from "./operations";
 
 const initialState = {
@@ -15,7 +16,8 @@ const initialState = {
   currentUser: {},
   errMessage: "",
   posts: [],
-  isPostsUpdate: false,
+  isPostsUpdate: true,
+  singlePost: {},
 };
 
 const usersSlice = createSlice({
@@ -25,13 +27,14 @@ const usersSlice = createSlice({
     logout: (state) => {
       state.isLoggedIn = false;
       state.currentUser = [];
+      posts = [];
+      singlePost = {};
     },
   },
   extraReducers: (builder) => {
     builder
       .addCase(registerUserThunk.fulfilled, (state, { payload }) => {
-        console.log(payload);
-        state.currentUser = {
+               state.currentUser = {
           email: payload.email,
           displayName: payload.displayName,
           uid: payload.uid,
@@ -40,10 +43,8 @@ const usersSlice = createSlice({
       })
       .addCase(registerUserThunk.rejected, (state, { payload }) => {
         state.errMessage = payload;
-        console.log(payload);
       })
       .addCase(loginThunk.fulfilled, (state, { payload }) => {
-        console.log(payload);
         state.currentUser = {
           email: payload.email,
           displayName: payload.displayName,
@@ -53,7 +54,6 @@ const usersSlice = createSlice({
       })
       .addCase(loginThunk.rejected, (state, { payload }) => {
         state.errMessage = payload;
-        console.log(payload);
       })
       .addCase(addPostThunk.fulfilled, (state, { payload }) => {
         state.posts = [...state.posts];
@@ -72,12 +72,22 @@ const usersSlice = createSlice({
         state.errMessage = payload;
       })
       .addCase(addCommentThunk.fulfilled, (state, { payload }) => {
-        state.isPostsUpdate = false;
-      })
-      .addCase(addCommentThunk.pending, (state, { payload }) => {
         state.isPostsUpdate = true;
       })
+      .addCase(addCommentThunk.pending, (state, { payload }) => {
+        state.isPostsUpdate = false;
+      })
       .addCase(addCommentThunk.rejected, (state, { payload }) => {
+        state.errMessage = payload;
+      })
+      .addCase(getSinglePostThunk.fulfilled, (state, { payload }) => {
+        state.singlePost = payload;
+        state.isPostsUpdate = false;
+      })
+      .addCase(getSinglePostThunk.pending, (state, { payload }) => {
+        state.isPostsUpdate = true;
+      })
+      .addCase(getSinglePostThunk.rejected, (state, { payload }) => {
         state.errMessage = payload;
       });
   },
