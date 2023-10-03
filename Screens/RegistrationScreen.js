@@ -18,15 +18,17 @@ import addPhoto from "../assets/images/addPhoto.jpg";
 import PhotoBG from "../assets/images/PhotoBG.jpg";
 import { registerUserThunk } from "../src/Redux/Auth/operations";
 import { getLoggedIn } from "../src/Redux/Auth/selectors";
+import ImagePicker from "react-native-image-picker";
 
 export const RegistrationScreen = () => {
-  const navigation = useNavigation();
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [keyboardVisible, setKeyboardVisible] = useState(false);
-
   const [login, setLogin] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [image, setImage] = useState(null);
+  const navigation = useNavigation();
+
   const isLoggedIn = useSelector(getLoggedIn);
 
   const dispatch = useDispatch();
@@ -99,12 +101,38 @@ export const RegistrationScreen = () => {
     }
   }, [isLoggedIn]);
 
+  const chooseImage = () => {
+    const options = {
+      title: "Select Avatar",
+      storageOptions: {
+        skipBackup: true,
+        path: "images",
+      },
+    };
+
+    ImagePicker.showImagePicker(options, (response) => {
+      if (response.error) {
+        console.log("ImagePicker Error: ", response.error);
+      } else {
+        setImage(response.uri);
+      }
+    });
+  };
+
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.container}>
         <ImageBackground source={PhotoBG} style={styles.imageBackground}>
           <View style={styles.registrationScreenContainer}>
-            <Image source={addPhoto} style={styles.image} />
+            <View style={styles.imageContainer}>
+              <TouchableOpacity onPress={chooseImage}>
+                {image ? (
+                  <Image source={{ uri: image }} style={styles.image} />
+                ) : (
+                  <Image source={addPhoto} style={styles.image} />
+                )}
+              </TouchableOpacity>
+            </View>
             <Text style={styles.registrationScreenText}>Реєстрація</Text>
             <View style={styles.inputsContainer}>
               <View style={styles.textInputWrapper}>

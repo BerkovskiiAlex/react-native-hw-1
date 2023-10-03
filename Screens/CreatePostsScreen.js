@@ -273,14 +273,11 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     borderRadius: 100,
     backgroundColor: "#FF6C00",
+    alignItems: "center",
   },
   publishButtonText: {
     color: "white",
     fontSize: 18,
-    paddingTop: 16,
-    paddingBottom: 16,
-    paddingLeft: 32,
-    paddingRight: 32,
   },
   mapStyle: {
     width: Dimensions.get("window").width,
