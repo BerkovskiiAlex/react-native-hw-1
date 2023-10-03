@@ -31,27 +31,45 @@ export const PostsScreen = () => {
 
   return (
     <ScrollView contentContainerStyle={styles.postsScreenContainer}>
-      {posts.map((postObj, index) => (
-        <View key={postObj.postId}>
-          <Text>{postObj.post.title}</Text>
-          <Image
-            style={{ width: 200, height: 200 }}
-            source={{ uri: postObj.post.photoUrl }}
-          />
-          <View style={styles.commentsContainer}>
-            <TouchableOpacity
-              onPress={() => {
-                handleGoToPost(postObj.postId);
-              }}
-            >
-              <Ionicons name="chatbubbles-outline" size={20} />
-            </TouchableOpacity>
-            <Text>
-              {postObj.post.comments ? postObj.post.comments.length : 0}
-            </Text>
-          </View>
-        </View>
-      ))}
+      {posts &&
+        posts.map((postObj, index) => {
+          const { post } = postObj;
+          if (!post) return null;
+          return (
+            <View key={postObj.postId}>
+              <Text>{post.title}</Text>
+              <Image
+                style={{ width: 343, height: 240 }}
+                source={{ uri: post.photoUrl }}
+              />
+              <View style={styles.descriptionContainer}>
+                <TouchableOpacity
+                  style={styles.descriptionTouchableOpacity}
+                  onPress={() => {
+                    handleGoToPost(postObj.postId);
+                  }}
+                >
+                  <Ionicons name="chatbubbles-outline" size={20} />
+                  <Text>
+                    {postObj.post.comments ? postObj.post.comments.length : 0}
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.descriptionTouchableOpacity}
+                  onPress={() => {
+                    navigation.navigate("Карта", {
+                      location: post.location,
+                      markerTitle: post.markerTitle,
+                    });
+                  }}
+                >
+                  <Ionicons name="location-outline" size={20} />
+                  <Text style={styles.descriptionText}>{post.markerTitle}</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          );
+        })}
     </ScrollView>
   );
 };
@@ -66,7 +84,14 @@ const styles = StyleSheet.create({
     paddingTop: 10,
     paddingBottom: 70,
   },
-  commentsContainer: {
+  descriptionContainer: {
     flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  descriptionTouchableOpacity: {
+    flexDirection: "row",
+  },
+  descriptionText: {
+    textDecorationLine: "underline",
   },
 });

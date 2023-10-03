@@ -59,13 +59,18 @@ export const loginThunk = createAsyncThunk(
 
 export const addPostThunk = createAsyncThunk(
   "posts/addPost",
-  async ({ photoTitle, location, photoUrl, comments }, { rejectWithValue }) => {
+  async (
+    { photoTitle, location, photoUrl, comments, markerTitle },
+    { rejectWithValue }
+  ) => {
     try {
       const docRef = await addDoc(collection(db, "posts"), {
         title: photoTitle,
         location,
         photoUrl,
         comments,
+        markerTitle,
+
         createdAt: new Date().toISOString(),
       });
       console.log("Document written with ID: ", docRef.id);
@@ -97,7 +102,7 @@ export const addCommentThunk = createAsyncThunk(
   "posts/addComment",
   async ({ commentText, uid, createdAt, postId }, { rejectWithValue }) => {
     const comment = { commentText, uid, createdAt };
-        try {
+    try {
       const addedComment = await updateDoc(doc(db, "posts", postId), {
         comments: arrayUnion({ ...comment }),
       });

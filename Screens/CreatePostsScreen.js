@@ -28,11 +28,12 @@ export const CreatePostsScreen = () => {
   const [type, setType] = useState(Camera.Constants.Type.back);
   const [photoTitle, setPhotoTitle] = useState("");
   const [location, setLocation] = useState("");
+  const [markerTitle, setMarkerTitle] = useState("");
   const [isMapReady, setMapReady] = useState(false);
-  const navigation = useNavigation();
   const [photoUri, setPhotoUri] = useState(null);
+  const navigation = useNavigation();
   const dispatch = useDispatch();
-  const isFormValid = photoTitle && location && photoUri;
+  const isFormValid = photoTitle && location && photoUri && markerTitle;
 
   useFocusEffect(
     useCallback(() => {
@@ -82,8 +83,6 @@ export const CreatePostsScreen = () => {
   }
 
   const handleCreatePost = async () => {
-    
-
     const storageRef = ref(storage, "photos/" + photoUri.split("/").pop());
 
     try {
@@ -92,7 +91,15 @@ export const CreatePostsScreen = () => {
       await uploadBytes(storageRef, blob);
       const photoUrl = await getDownloadURL(storageRef);
 
-      dispatch(addPostThunk({ photoTitle, photoUrl, location, comments: [] }));
+      dispatch(
+        addPostThunk({
+          photoTitle,
+          photoUrl,
+          location,
+          comments: [],
+          markerTitle,
+        })
+      );
       navigation.navigate("Публікації");
     } catch (error) {
       console.error("Ошибка загрузки фотографии:", error);
@@ -143,8 +150,17 @@ export const CreatePostsScreen = () => {
           style={styles.input}
           onChangeText={setPhotoTitle}
           value={photoTitle}
-          placeholder="Назва"
+          placeholder="Назва Фото"
         />
+        <View style={styles.inputWrapper}>
+          <Ionicons name="location-outline" size={20} style={styles.icon} />
+          <TextInput
+            style={styles.input}
+            onChangeText={setMarkerTitle}
+            value={markerTitle}
+            placeholder="Місцевість де зроблено фото"
+          />
+        </View>
       </View>
       <MapView
         provider={PROVIDER_GOOGLE}
@@ -167,7 +183,7 @@ export const CreatePostsScreen = () => {
         }}
       >
         {location && isMapReady && (
-          <Marker title="I am here" coordinate={location} description="Hello" />
+          <Marker title={markerTitle} coordinate={location} />
         )}
       </MapView>
       <TouchableOpacity
@@ -201,7 +217,6 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     justifyContent: "space-between",
   },
-
   flipContainer: {
     alignSelf: "center",
     justifyContent: "center",
@@ -233,7 +248,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderRadius: 50,
   },
-
   takePhotoInner: {
     borderWidth: 2,
     borderColor: "white",
@@ -242,7 +256,6 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     borderRadius: 50,
   },
-
   input: {
     height: 40,
     margin: 12,
@@ -250,20 +263,32 @@ const styles = StyleSheet.create({
     borderColor: "white",
     color: "white",
     paddingLeft: 5,
+    borderWidth: 0,
+    marginLeft: 4,
   },
   publishButton: {
     backgroundColor: "blue",
     paddingHorizontal: 20,
     paddingVertical: 20,
     borderRadius: 5,
+    borderRadius: 100,
+    backgroundColor: "#FF6C00",
   },
   publishButtonText: {
     color: "white",
     fontSize: 18,
+    paddingTop: 16,
+    paddingBottom: 16,
+    paddingLeft: 32,
+    paddingRight: 32,
   },
   mapStyle: {
     width: Dimensions.get("window").width,
     height: Dimensions.get("window").height / 2,
     marginTop: 12,
+  },
+  inputWrapper: {
+    flexDirection: "row",
+    alignItems: "center",
   },
 });

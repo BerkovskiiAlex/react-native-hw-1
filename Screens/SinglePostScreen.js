@@ -54,7 +54,7 @@ export const SinglePostScreen = ({ route }) => {
         <View key={singlePost.postId}>
           <Text>{singlePost.title}</Text>
           <Image
-            style={{ width: 200, height: 200 }}
+            style={{ width: 343, height: 240 }}
             source={{ uri: singlePost.photoUrl }}
           />
           {singlePost.comments && singlePost.comments.length > 0 ? (

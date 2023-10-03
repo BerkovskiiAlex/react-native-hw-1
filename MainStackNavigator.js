@@ -9,6 +9,7 @@ import { Home } from "./Screens/Home";
 import { useSelector } from "react-redux";
 import { CreatePostsScreen } from "./Screens/CreatePostsScreen";
 import { SinglePostScreen } from "./Screens/SinglePostScreen";
+import { MapScreen } from "./Screens/MapScreen";
 
 const MainStack = createStackNavigator();
 
@@ -40,6 +41,11 @@ export const MainStackNavigator = () => {
       <MainStack.Screen
         name="Коментарі"
         component={SinglePostScreen}
+        options={{ headerShown: true }}
+      />
+      <MainStack.Screen
+        name="Карта"
+        component={MapScreen}
         options={{ headerShown: true }}
       />
     </MainStack.Navigator>
