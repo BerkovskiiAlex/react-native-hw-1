@@ -1,6 +1,6 @@
 /** @format */
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import {
   Image,
   StyleSheet,
@@ -32,16 +32,13 @@ export const PostsScreen = () => {
   return (
     <ScrollView contentContainerStyle={styles.postsScreenContainer}>
       {posts &&
-        posts.map((postObj, index) => {
+        posts.map((postObj) => {
           const { post } = postObj;
           if (!post) return null;
           return (
-            <View key={postObj.postId}>
-              <Text>{post.title}</Text>
-              <Image
-                style={{ width: 343, height: 240 }}
-                source={{ uri: post.photoUrl }}
-              />
+            <View key={postObj.postId} style={styles.postContainer}>
+              <Image style={styles.postImage} source={{ uri: post.photoUrl }} />
+              <Text style={styles.postTitle}>{post.title}</Text>
               <View style={styles.descriptionContainer}>
                 <TouchableOpacity
                   style={styles.descriptionTouchableOpacity}
@@ -50,7 +47,7 @@ export const PostsScreen = () => {
                   }}
                 >
                   <Ionicons name="chatbubbles-outline" size={20} />
-                  <Text>
+                  <Text style={styles.descriptionQuantity}>
                     {postObj.post.comments ? postObj.post.comments.length : 0}
                   </Text>
                 </TouchableOpacity>
@@ -83,7 +80,17 @@ const styles = StyleSheet.create({
     width: "100%",
     paddingTop: 10,
     paddingBottom: 70,
+    gap: 32,
   },
+  postImage: {
+    width: 343,
+    height: 240,
+    borderRadius: 8,
+  },
+  postContainer: {
+    gap: 8,
+  },
+  postTitle: { color: "#212121", fontFamily: "Roboto-Medium", fontSize: 16 },
   descriptionContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
@@ -91,7 +98,17 @@ const styles = StyleSheet.create({
   descriptionTouchableOpacity: {
     flexDirection: "row",
   },
-  descriptionText: {
+  descriptionQuantity: {
+    color: "#212121",
+    fontFamily: "Roboto-Regular",
+    fontSize: 16,
+    marginLeft: 8,
+  },
+  descriptionLink: {
+    color: "#212121",
+    textAlign: "right",
+    fontFamily: "Roboto-Regular",
+    fontSize: 16,
     textDecorationLine: "underline",
   },
 });

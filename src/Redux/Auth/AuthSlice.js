@@ -34,7 +34,7 @@ const usersSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(registerUserThunk.fulfilled, (state, { payload }) => {
-               state.currentUser = {
+        state.currentUser = {
           email: payload.email,
           displayName: payload.displayName,
           uid: payload.uid,

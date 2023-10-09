@@ -1,6 +1,6 @@
 /** @format */
 
-import React, { useState, useRef, useCallback } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {
   Text,
   View,
@@ -14,8 +14,6 @@ import { Camera } from "expo-camera";
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import * as MediaLibrary from "expo-media-library";
 import { useNavigation } from "@react-navigation/native";
-import { useFocusEffect } from "@react-navigation/native";
-import * as Location from "expo-location";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { useDispatch } from "react-redux";
 import { storage } from "../src/Redux/Firebase/config";
@@ -35,51 +33,22 @@ export const CreatePostsScreen = () => {
   const dispatch = useDispatch();
   const isFormValid = photoTitle && location && photoUri && markerTitle;
 
-  useFocusEffect(
-    useCallback(() => {
-      let isActive = true;
+  useEffect(() => {
+    (async () => {
+      const cameraStatus = await Camera.requestCameraPermissionsAsync();
+      const mediaLibStatus = await MediaLibrary.requestPermissionsAsync();
 
-      async function checkPermissionsOnFocus() {
-        const cameraStatus = await Camera.requestCameraPermissionsAsync();
-        const audioStatus = await Camera.requestMicrophonePermissionsAsync();
-        const libStatus = await MediaLibrary.requestPermissionsAsync();
-
-        if (isActive) {
-          setHasPermission(
-            cameraStatus.status === "granted" &&
-              audioStatus.status === "granted" &&
-              libStatus.status === "granted"
-          );
-        }
-      }
-
-      (async () => {
-        let { status } = await Location.requestForegroundPermissionsAsync();
-        if (status !== "granted") {
-          console.log("Permission to access location was denied");
-        }
-
-        let location = await Location.getCurrentPositionAsync({});
-        const coords = {
-          latitude: location.coords.latitude,
-          longitude: location.coords.longitude,
-        };
-        setLocation(coords);
-      })();
-
-      checkPermissionsOnFocus();
-
-      return () => {
-        isActive = false;
-      };
-    }, [])
-  );
+      setHasPermission(
+        cameraStatus.status === "granted" && mediaLibStatus.status === "granted"
+      );
+    })();
+  }, []);
 
   if (hasPermission === null) {
     return <View />;
   }
   if (hasPermission === false) {
-    return <Text>Немає доступу до камери</Text>;
+    return <Text>No access to camera</Text>;
   }
 
   const handleCreatePost = async () => {
@@ -206,6 +175,7 @@ const styles = StyleSheet.create({
     width: "100%",
     height: Dimensions.get("window").width,
     overflow: "hidden",
+    borderRadius: 15,
   },
   camera: {
     flex: 1,
@@ -261,10 +231,12 @@ const styles = StyleSheet.create({
     margin: 12,
     borderWidth: 1,
     borderColor: "white",
-    color: "white",
+    color: "#212121",
     paddingLeft: 5,
     borderWidth: 0,
     marginLeft: 4,
+    fontFamily: "Roboto-Medium",
+    fontSize: 16,
   },
   publishButton: {
     backgroundColor: "blue",
@@ -283,6 +255,7 @@ const styles = StyleSheet.create({
     width: Dimensions.get("window").width,
     height: Dimensions.get("window").height / 2,
     marginTop: 12,
+    borderRadius: 15,
   },
   inputWrapper: {
     flexDirection: "row",

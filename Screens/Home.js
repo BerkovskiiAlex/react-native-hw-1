@@ -9,6 +9,7 @@ import { ProfileScreen } from "./ProfileScreen";
 import { logout } from "../src/Redux/Auth/AuthSlice";
 
 const Tabs = createBottomTabNavigator();
+
 import { useNavigation } from "@react-navigation/native";
 import { useDispatch } from "react-redux";
 

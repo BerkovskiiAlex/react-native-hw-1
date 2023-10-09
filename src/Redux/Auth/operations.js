@@ -100,8 +100,11 @@ export const getDataFromFirestoreThunk = createAsyncThunk(
 
 export const addCommentThunk = createAsyncThunk(
   "posts/addComment",
-  async ({ commentText, uid, createdAt, postId }, { rejectWithValue }) => {
-    const comment = { commentText, uid, createdAt };
+  async (
+    { commentText, displayName, createdAt, postId },
+    { rejectWithValue }
+  ) => {
+    const comment = { commentText, displayName, createdAt };
     try {
       const addedComment = await updateDoc(doc(db, "posts", postId), {
         comments: arrayUnion({ ...comment }),

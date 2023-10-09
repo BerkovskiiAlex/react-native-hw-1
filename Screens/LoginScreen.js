@@ -65,7 +65,7 @@ export const LoginScreen = () => {
   };
 
   const handleSubmit = () => {
-        if (!emailValidator(email) || !passwordValidator(password)) {
+    if (!emailValidator(email) || !passwordValidator(password)) {
       return;
     }
     console.log("Вход:", email, password);

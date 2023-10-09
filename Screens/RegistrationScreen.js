@@ -8,17 +8,14 @@ import {
   TextInput,
   TouchableOpacity,
   Keyboard,
-  Image,
   TouchableWithoutFeedback,
   ImageBackground,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
-import addPhoto from "../assets/images/addPhoto.jpg";
 import PhotoBG from "../assets/images/PhotoBG.jpg";
 import { registerUserThunk } from "../src/Redux/Auth/operations";
 import { getLoggedIn } from "../src/Redux/Auth/selectors";
-import ImagePicker from "react-native-image-picker";
 
 export const RegistrationScreen = () => {
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -27,8 +24,8 @@ export const RegistrationScreen = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [image, setImage] = useState(null);
-  const navigation = useNavigation();
 
+  const navigation = useNavigation();
   const isLoggedIn = useSelector(getLoggedIn);
 
   const dispatch = useDispatch();
@@ -101,38 +98,11 @@ export const RegistrationScreen = () => {
     }
   }, [isLoggedIn]);
 
-  const chooseImage = () => {
-    const options = {
-      title: "Select Avatar",
-      storageOptions: {
-        skipBackup: true,
-        path: "images",
-      },
-    };
-
-    ImagePicker.showImagePicker(options, (response) => {
-      if (response.error) {
-        console.log("ImagePicker Error: ", response.error);
-      } else {
-        setImage(response.uri);
-      }
-    });
-  };
-
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.container}>
         <ImageBackground source={PhotoBG} style={styles.imageBackground}>
           <View style={styles.registrationScreenContainer}>
-            <View style={styles.imageContainer}>
-              <TouchableOpacity onPress={chooseImage}>
-                {image ? (
-                  <Image source={{ uri: image }} style={styles.image} />
-                ) : (
-                  <Image source={addPhoto} style={styles.image} />
-                )}
-              </TouchableOpacity>
-            </View>
             <Text style={styles.registrationScreenText}>Реєстрація</Text>
             <View style={styles.inputsContainer}>
               <View style={styles.textInputWrapper}>
@@ -217,13 +187,6 @@ const styles = StyleSheet.create({
     width: "100%",
     position: "absolute",
     bottom: 0,
-  },
-  image: {
-    position: "absolute",
-    top: -60,
-    width: 132,
-    height: 120,
-    borderRadius: 15,
   },
   registrationScreenText: {
     fontFamily: "Roboto-Medium",
