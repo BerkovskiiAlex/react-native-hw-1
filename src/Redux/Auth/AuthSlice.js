@@ -27,8 +27,12 @@ const usersSlice = createSlice({
     logout: (state) => {
       state.isLoggedIn = false;
       state.currentUser = [];
-      posts = [];
-      singlePost = {};
+      state.posts = [];
+      state.singlePost = {};
+      state.errMessage = "";
+    },
+    clearErrorMessage: (state) => {
+      state.errMessage = "";
     },
   },
   extraReducers: (builder) => {
@@ -40,6 +44,7 @@ const usersSlice = createSlice({
           uid: payload.uid,
         };
         state.isLoggedIn = true;
+        state.errMessage = "";
       })
       .addCase(registerUserThunk.rejected, (state, { payload }) => {
         state.errMessage = payload;
@@ -51,6 +56,7 @@ const usersSlice = createSlice({
           uid: payload.uid,
         };
         state.isLoggedIn = true;
+        state.errMessage = "";
       })
       .addCase(loginThunk.rejected, (state, { payload }) => {
         state.errMessage = payload;
@@ -93,5 +99,5 @@ const usersSlice = createSlice({
   },
 });
 
-export const { logout } = usersSlice.actions;
+export const { logout, clearErrorMessage } = usersSlice.actions;
 export const usersReducer = usersSlice.reducer;

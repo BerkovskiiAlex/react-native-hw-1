@@ -15,7 +15,8 @@ import { useNavigation } from "@react-navigation/native";
 import PhotoBG from "../assets/images/PhotoBG.jpg";
 import { useDispatch, useSelector } from "react-redux";
 import { loginThunk } from "../src/Redux/Auth/operations";
-import { getLoggedIn } from "../src/Redux/Auth/selectors";
+import { getLoggedIn, getErrMessage } from "../src/Redux/Auth/selectors";
+import { clearErrorMessage } from "../src/Redux/Auth/AuthSlice";
 
 export const LoginScreen = () => {
   const navigation = useNavigation();
@@ -24,6 +25,7 @@ export const LoginScreen = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const isLoggedIn = useSelector(getLoggedIn);
+  const errMessage = useSelector(getErrMessage);
 
   const keyboardDidShow = () => setKeyboardVisible(true);
   const keyboardDidHide = () => setKeyboardVisible(false);
@@ -45,6 +47,13 @@ export const LoginScreen = () => {
       keyboardDidHideSubscription.remove();
     };
   }, []);
+
+  useEffect(() => {
+    if (errMessage) {
+      alert(errMessage);
+      dispatch(clearErrorMessage());
+    }
+  }, [errMessage]);
 
   const emailValidator = (email) => {
     const re =

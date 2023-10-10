@@ -23,3 +23,7 @@ export const getCurrentUser = (state) => {
 export const getSinglePost = (state) => {
   return state.singlePost;
 };
+
+export const getErrMessage = (state) => {
+  return state.errMessage;
+};
